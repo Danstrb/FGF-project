@@ -21,4 +21,9 @@ public class TemperatureController {
     public void addTemperature(@RequestBody Temperature temperature) {
         temperatureService.addTemperature(temperature);
     }
+
+    @DeleteMapping("/{id}")
+    public void deleteTemperature(@PathVariable("id") Long id) {
+        temperatureService.deleteTemperature(id);
+    }
 }
