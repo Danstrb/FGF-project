@@ -18,4 +18,7 @@ public class TemperatureService {
         temperatureRepository.save(temperature);
     }
 
+    public void deleteTemperature(Long id) {
+        temperatureRepository.deleteById(id);
+    }
 }
