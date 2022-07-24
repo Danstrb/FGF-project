@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 
@@ -13,7 +12,7 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Temperature {
+public class Weather {
     @SequenceGenerator (
             name = "temperature_sequence",
             sequenceName = "temperature_sequence",
@@ -24,6 +23,6 @@ public class Temperature {
     )
     @Id
     private Long id;
-    private DateTimeFormat time;
+    private String time;
     private float temperature;
 }
