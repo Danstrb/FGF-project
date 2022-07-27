@@ -9,7 +9,7 @@ import java.util.List;
 @RequestMapping("api/v1/temperatures")
 @AllArgsConstructor
 public class WeatherController {
-    WeatherService temperatureService;
+    private WeatherService temperatureService;
 
     @GetMapping
     public List<Weather> getAllWeather() {
@@ -29,6 +29,11 @@ public class WeatherController {
     @DeleteMapping("/{id}")
     public void deleteTemperature(@PathVariable("id") Long id) {
         temperatureService.deleteWeather(id);
+    }
+
+    @GetMapping("/{longestrange}")
+    public List<String> getTemperatureRange(@RequestBody Range range) {
+        return temperatureService.findLongestTempRange(range.getLowerTempLimit(), range.getUpperTempLimit());
     }
 
 }
