@@ -31,9 +31,19 @@ public class WeatherController {
         temperatureService.deleteWeather(id);
     }
 
-    @GetMapping("/{longestrange}")
-    public List<String> getTemperatureRange(@RequestBody Range range) {
-        return temperatureService.findLongestTempRange(range.getLowerTempLimit(), range.getUpperTempLimit());
+    @GetMapping("/temprange")
+    @ResponseBody
+    public List<String> getTemperatureRange(@RequestParam float lowerTempLimit, @RequestParam float upperTempLimit) {
+        return temperatureService.findLongestTempRange(lowerTempLimit, upperTempLimit);
+    }
+
+    @GetMapping("/temprange/timelimit")
+    @ResponseBody
+    public List<String> getTemperatureRangeAtTime(@RequestParam float lowerTempLimit,
+                                                  @RequestParam float upperTempLimit,
+                                                  @RequestParam String lowerTimeLimit,
+                                                  @RequestParam String upperTimeLimit) {
+        return temperatureService.findLongestTempRangeAtTime(lowerTempLimit, upperTempLimit, lowerTimeLimit, upperTimeLimit);
     }
 
 }
