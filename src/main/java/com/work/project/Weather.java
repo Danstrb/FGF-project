@@ -23,6 +23,6 @@ public class Weather {
     )
     @Id
     private Long id;
-    private String time;
+    private String dateTime; //TODO must check with input whether the input is in given format - dd.MM.yyyy, HH:mm
     private float temperature;
 }
