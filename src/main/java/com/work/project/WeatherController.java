@@ -1,12 +1,13 @@
 package com.work.project;
 
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/temperatures")
+@RequestMapping("api/v1/weather")
 @AllArgsConstructor
 public class WeatherController {
     private WeatherService temperatureService;
@@ -17,8 +18,9 @@ public class WeatherController {
     }
 
     @PostMapping
-    public void addWeather(@RequestBody Weather weather) {
-        temperatureService.addWeather(weather);
+    @ResponseStatus(HttpStatus.CREATED)
+    public Weather addWeather(@RequestBody Weather weather) {
+        return temperatureService.addWeather(weather);
     }
 
     @PutMapping("/{id}")
