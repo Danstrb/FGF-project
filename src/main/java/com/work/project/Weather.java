@@ -13,6 +13,11 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Weather {
+    public Weather(String dateTime, double temperature) {
+        this.dateTime = dateTime;
+        this.temperature = temperature;
+    }
+
     @SequenceGenerator (
             name = "temperature_sequence",
             sequenceName = "temperature_sequence",
@@ -21,8 +26,9 @@ public class Weather {
             strategy = GenerationType.SEQUENCE,
             generator = "temperature_sequence"
     )
+
     @Id
     private Long id;
     private String dateTime; //TODO must check with input whether the input is in given format - dd.MM.yyyy, HH:mm
-    private float temperature;
+    private double temperature;
 }
