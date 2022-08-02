@@ -3,7 +3,6 @@ version: '3'
 services:
   app:
     image: 'docker-spring-boot-postgres:latest'
-    restart: always
     build:
       context: .
     container_name: app
@@ -26,15 +25,12 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=wp
     ports:
       - '5432:5432'
     volumes:
       - postgres-data-dev:/var/lib/postgresql/data
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready" ]
-      interval: 5s
-      timeout: 5s
-      retries: 5
+
 volumes:
   postgres-data-dev:
     driver: local
