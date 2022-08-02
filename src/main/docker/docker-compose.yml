@@ -17,7 +17,7 @@ services:
       - SPRING_DATASOURCE_PASSWORD=password
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
     depends_on:
-      postgres-db:
+      db:
         condition: service_healthy  
     
   db:
