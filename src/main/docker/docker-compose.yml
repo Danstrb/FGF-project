@@ -21,7 +21,6 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=wp
     ports:
       - '5432:5432'
     volumes:
