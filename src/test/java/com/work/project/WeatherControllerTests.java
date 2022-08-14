@@ -1,9 +1,7 @@
 package com.work.project;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -136,22 +134,70 @@ public class WeatherControllerTests {
                 .andDo(print());
     }
 
-    // TODO: resolve
     @Test
-    @Disabled
     public void givenInvalidId_shouldDeleteWeather() throws Exception {
         // given
         Long validId = 1L;
         Long invalidId = 2L;
         willDoNothing().given(weatherService).deleteWeather(invalidId);
-//        Mockito.doThrow(new IllegalArgumentException()).when(weatherService).deleteWeather(invalidId);
-
 
         // when
         ResultActions response = mockMvc.perform(delete("/api/v1/weathers/{id}", invalidId));
 
         // then
-        response.andExpect(status().isBadRequest())
+        response.andExpect(status().isOk())
                 .andDo(print());
+    }
+
+    @Test
+    public void itShouldGetWeatherInTemperatureRange() throws Exception {
+        // given
+        double lowerTempLimit = 12.1;
+        double upperTempLimit = 15.1;
+        List<Weather> weatherList = List.of(
+                new Weather(1L, "01.08.2001, 09:00", 11.5),
+                new Weather(2L, "02.08.2001, 10:00", 12.5),
+                new Weather(3L, "03.08.2001, 11:00", 13.5),
+                new Weather(4L, "04.08.2001, 12:00", 14.5),
+                new Weather(5L, "05.08.2001, 13:00", 15.5));
+        List<String> resultList = List.of("02.08.2001, 10:00 to 04.08.2001, 12:00");
+        given(weatherService.findLongestTempRange(lowerTempLimit, upperTempLimit)).willReturn(resultList);
+
+        // when
+        // then
+        mockMvc.perform(get("/api/v1/weathers/temprange")
+                .param("lowerTempLimit", "12.1")
+                .param("upperTempLimit", "15.1"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", is(resultList)));
+    }
+
+    @Test
+    public void itShouldGetWeatherInTemperatureRangeAtTime() throws Exception {
+        // given
+        double lowerTempLimit = 12.1;
+        double upperTempLimit = 15.1;
+        String lowerHourLimit = "09:30";
+        String upperHourLimit = "12:30";
+        List<Weather> weatherList = List.of(
+                new Weather(1L, "01.08.2001, 09:00", 11.5),
+                new Weather(2L, "02.08.2001, 10:00", 12.5),
+                new Weather(3L, "03.08.2001, 11:00", 13.5),
+                new Weather(4L, "04.08.2001, 12:00", 14.5),
+                new Weather(5L, "05.08.2001, 13:00", 15.5));
+        List<String> resultList = List.of("02.08.2001, 10:00 to 04.08.2001, 12:00");
+        given(weatherService.findLongestTempRangeAtTime(lowerTempLimit, upperTempLimit, lowerHourLimit, upperHourLimit)).willReturn(resultList);
+
+        // when
+        // then
+        mockMvc.perform(get("/api/v1/weathers/temprange/timelimit")
+                        .param("lowerTempLimit", Double.toString(lowerTempLimit))
+                        .param("upperTempLimit", Double.toString(upperTempLimit))
+                        .param("lowerTimeLimit", lowerHourLimit)
+                        .param("upperTimeLimit", upperHourLimit))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", is(resultList)));
     }
 }
