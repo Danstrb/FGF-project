@@ -1,5 +1,6 @@
 package com.work.project;
 
+import com.work.project.exceptions.EmptyRepositoryException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,16 +52,16 @@ public class WeatherController {
 
     @GetMapping("/temprange")
     @ResponseBody
-    public List<String> getTemperatureRange(@RequestParam double lowerTempLimit, @RequestParam double upperTempLimit) {
+    public List<String> getWeatherRange(@RequestParam double lowerTempLimit, @RequestParam double upperTempLimit) throws EmptyRepositoryException {
         return weatherService.findLongestTempRange(lowerTempLimit, upperTempLimit);
     }
 
     @GetMapping("/temprange/timelimit")
     @ResponseBody
-    public List<String> getTemperatureRangeAtTime(@RequestParam double lowerTempLimit,
-                                                  @RequestParam double upperTempLimit,
-                                                  @RequestParam String lowerTimeLimit,
-                                                  @RequestParam String upperTimeLimit) {
+    public List<String> getWeatherRangeAtTime(@RequestParam double lowerTempLimit,
+                                              @RequestParam double upperTempLimit,
+                                              @RequestParam String lowerTimeLimit,
+                                              @RequestParam String upperTimeLimit) throws EmptyRepositoryException {
         return weatherService.findLongestTempRangeAtTime(lowerTempLimit, upperTempLimit, lowerTimeLimit, upperTimeLimit);
     }
 
